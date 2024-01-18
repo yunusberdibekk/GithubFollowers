@@ -1,2 +1,2 @@
 # GithubFollowers
-Sean Allen's Take Home Project - Github Followers
+Sean Allen's Take Home Project - Github Followers (IN PROGRESS...)
