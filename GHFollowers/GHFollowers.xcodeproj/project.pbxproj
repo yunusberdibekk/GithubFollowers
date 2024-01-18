@@ -9,19 +9,21 @@
 /* Begin PBXBuildFile section */
 		AA7DBB282B59CE6B002BE205 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB272B59CE6B002BE205 /* AppDelegate.swift */; };
 		AA7DBB2A2B59CE6B002BE205 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB292B59CE6B002BE205 /* SceneDelegate.swift */; };
-		AA7DBB2C2B59CE6B002BE205 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB2B2B59CE6B002BE205 /* ViewController.swift */; };
 		AA7DBB312B59CE6C002BE205 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA7DBB302B59CE6C002BE205 /* Assets.xcassets */; };
 		AA7DBB342B59CE6C002BE205 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7DBB322B59CE6C002BE205 /* LaunchScreen.storyboard */; };
+		AA7DBB422B59E4E5002BE205 /* GHSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */; };
+		AA7DBB442B59E4EF002BE205 /* GHFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AA7DBB242B59CE6B002BE205 /* GHFollowers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GHFollowers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7DBB272B59CE6B002BE205 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA7DBB292B59CE6B002BE205 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		AA7DBB2B2B59CE6B002BE205 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AA7DBB302B59CE6C002BE205 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA7DBB332B59CE6C002BE205 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA7DBB352B59CE6C002BE205 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHSearchViewController.swift; sourceTree = "<group>"; };
+		AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHFavoritesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				AA7DBB3B2B59DF2E002BE205 /* App */,
-				AA7DBB2B2B59CE6B002BE205 /* ViewController.swift */,
+				AA7DBB3D2B59E3F4002BE205 /* Features */,
 				AA7DBB3C2B59DF39002BE205 /* Resources */,
 			);
 			path = GHFollowers;
@@ -78,6 +80,31 @@
 				AA7DBB302B59CE6C002BE205 /* Assets.xcassets */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		AA7DBB3D2B59E3F4002BE205 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB3E2B59E3F9002BE205 /* GHSearch */,
+				AA7DBB3F2B59E3FD002BE205 /* GHFavorites */,
+			);
+			name = Features;
+			sourceTree = "<group>";
+		};
+		AA7DBB3E2B59E3F9002BE205 /* GHSearch */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */,
+			);
+			name = GHSearch;
+			sourceTree = "<group>";
+		};
+		AA7DBB3F2B59E3FD002BE205 /* GHFavorites */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */,
+			);
+			name = GHFavorites;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +177,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA7DBB2C2B59CE6B002BE205 /* ViewController.swift in Sources */,
 				AA7DBB282B59CE6B002BE205 /* AppDelegate.swift in Sources */,
 				AA7DBB2A2B59CE6B002BE205 /* SceneDelegate.swift in Sources */,
+				AA7DBB422B59E4E5002BE205 /* GHSearchViewController.swift in Sources */,
+				AA7DBB442B59E4EF002BE205 /* GHFavoritesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

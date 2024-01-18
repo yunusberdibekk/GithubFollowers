@@ -16,9 +16,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = ViewController()
+        window.rootViewController = createGHTabBarController()
         window.makeKeyAndVisible()
         self.window = window
+    }
+
+    func createGHSearchNavigationController() -> UINavigationController {
+        let searchVC = GHSearchViewController()
+        searchVC.title = "Search"
+        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        return UINavigationController(rootViewController: searchVC)
+    }
+
+    func createGHFavoritesNavigationController() -> UINavigationController {
+        let favoritesVC = GHFavoritesViewController()
+        favoritesVC.title = "Favorites"
+        favoritesVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        return UINavigationController(rootViewController: favoritesVC)
+    }
+
+    func createGHTabBarController() -> UITabBarController {
+        let tabBarVC = UITabBarController()
+        UITabBar.appearance().tintColor = .systemGreen
+        tabBarVC.viewControllers = [createGHSearchNavigationController(), createGHFavoritesNavigationController()]
+        return tabBarVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
