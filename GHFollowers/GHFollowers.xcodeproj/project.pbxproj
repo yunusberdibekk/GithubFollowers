@@ -11,8 +11,11 @@
 		AA7DBB2A2B59CE6B002BE205 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB292B59CE6B002BE205 /* SceneDelegate.swift */; };
 		AA7DBB312B59CE6C002BE205 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA7DBB302B59CE6C002BE205 /* Assets.xcassets */; };
 		AA7DBB342B59CE6C002BE205 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7DBB322B59CE6C002BE205 /* LaunchScreen.storyboard */; };
-		AA7DBB422B59E4E5002BE205 /* GHSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */; };
-		AA7DBB442B59E4EF002BE205 /* GHFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */; };
+		AA7DBB422B59E4E5002BE205 /* GFSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB412B59E4E5002BE205 /* GFSearchViewController.swift */; };
+		AA7DBB442B59E4EF002BE205 /* GFFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB432B59E4EF002BE205 /* GFFavoritesViewController.swift */; };
+		AA7DBB4A2B5AB4C0002BE205 /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB492B5AB4C0002BE205 /* GFButton.swift */; };
+		AA7DBB4D2B5AD957002BE205 /* GFTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB4C2B5AD957002BE205 /* GFTextField.swift */; };
+		AA7DBB4F2B5AE37D002BE205 /* GFFollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +25,11 @@
 		AA7DBB302B59CE6C002BE205 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA7DBB332B59CE6C002BE205 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA7DBB352B59CE6C002BE205 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHSearchViewController.swift; sourceTree = "<group>"; };
-		AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHFavoritesViewController.swift; sourceTree = "<group>"; };
+		AA7DBB412B59E4E5002BE205 /* GFSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSearchViewController.swift; sourceTree = "<group>"; };
+		AA7DBB432B59E4EF002BE205 /* GFFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFFavoritesViewController.swift; sourceTree = "<group>"; };
+		AA7DBB492B5AB4C0002BE205 /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
+		AA7DBB4C2B5AD957002BE205 /* GFTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTextField.swift; sourceTree = "<group>"; };
+		AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFFollowerListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,7 @@
 			children = (
 				AA7DBB3B2B59DF2E002BE205 /* App */,
 				AA7DBB3D2B59E3F4002BE205 /* Features */,
+				AA7DBB472B5AB4A2002BE205 /* Product */,
 				AA7DBB3C2B59DF39002BE205 /* Resources */,
 			);
 			path = GHFollowers;
@@ -85,26 +92,52 @@
 		AA7DBB3D2B59E3F4002BE205 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				AA7DBB3E2B59E3F9002BE205 /* GHSearch */,
-				AA7DBB3F2B59E3FD002BE205 /* GHFavorites */,
+				AA7DBB3E2B59E3F9002BE205 /* GFSearch */,
+				AA7DBB3F2B59E3FD002BE205 /* GFFavorites */,
 			);
 			name = Features;
 			sourceTree = "<group>";
 		};
-		AA7DBB3E2B59E3F9002BE205 /* GHSearch */ = {
+		AA7DBB3E2B59E3F9002BE205 /* GFSearch */ = {
 			isa = PBXGroup;
 			children = (
-				AA7DBB412B59E4E5002BE205 /* GHSearchViewController.swift */,
+				AA7DBB412B59E4E5002BE205 /* GFSearchViewController.swift */,
+				AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */,
 			);
-			name = GHSearch;
+			name = GFSearch;
 			sourceTree = "<group>";
 		};
-		AA7DBB3F2B59E3FD002BE205 /* GHFavorites */ = {
+		AA7DBB3F2B59E3FD002BE205 /* GFFavorites */ = {
 			isa = PBXGroup;
 			children = (
-				AA7DBB432B59E4EF002BE205 /* GHFavoritesViewController.swift */,
+				AA7DBB432B59E4EF002BE205 /* GFFavoritesViewController.swift */,
 			);
-			name = GHFavorites;
+			name = GFFavorites;
+			sourceTree = "<group>";
+		};
+		AA7DBB472B5AB4A2002BE205 /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB4B2B5AD93F002BE205 /* TextField */,
+				AA7DBB482B5AB4A5002BE205 /* Button */,
+			);
+			name = Product;
+			sourceTree = "<group>";
+		};
+		AA7DBB482B5AB4A5002BE205 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB492B5AB4C0002BE205 /* GFButton.swift */,
+			);
+			name = Button;
+			sourceTree = "<group>";
+		};
+		AA7DBB4B2B5AD93F002BE205 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				AA7DBB4C2B5AD957002BE205 /* GFTextField.swift */,
+			);
+			name = TextField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,10 +210,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA7DBB4D2B5AD957002BE205 /* GFTextField.swift in Sources */,
 				AA7DBB282B59CE6B002BE205 /* AppDelegate.swift in Sources */,
+				AA7DBB4A2B5AB4C0002BE205 /* GFButton.swift in Sources */,
+				AA7DBB4F2B5AE37D002BE205 /* GFFollowerListViewController.swift in Sources */,
 				AA7DBB2A2B59CE6B002BE205 /* SceneDelegate.swift in Sources */,
-				AA7DBB422B59E4E5002BE205 /* GHSearchViewController.swift in Sources */,
-				AA7DBB442B59E4EF002BE205 /* GHFavoritesViewController.swift in Sources */,
+				AA7DBB422B59E4E5002BE205 /* GFSearchViewController.swift in Sources */,
+				AA7DBB442B59E4EF002BE205 /* GFFavoritesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
