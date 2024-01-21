@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ErrorMessage: String {
+enum GFNetworkError: String, Error {
     case invalidUsername = "This username created an invalid request please try again."
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
     case invalidResponse = "Invalid response from the server. Please try again."
@@ -20,33 +20,34 @@ final class NetworkManager {
 
     private init() {}
 
-    // TODO: BU MANAGER DAHA GENERİC HALE GELEBİLİR. RESULT KULLANILABİLİR. RESPONSE STATUS KONTROLU DAHA İYİ YAPILABİLİR. URL REQUEST HEADER AND CONTENT EKLE.
-    func getFollowers(for username: String, page: Int, completion: @escaping ([Follower]?, ErrorMessage?) -> Void) {
+    // TODO: - BU MANAGER DAHA GENERİC HALE GELEBİLİR. RESULT KULLANILABİLİR. URL REQUEST HEADER AND CONTENT EKLE.
+    func getFollowers(for username: String, page: Int, completion: @escaping (Result<[Follower], GFNetworkError>) -> Void) {
         let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
         guard let url = URL(string: endpoint) else {
-            completion(nil, .invalidUsername)
+            completion(.failure(.invalidUsername))
             return
         }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in
             if let _ = error {
-                completion(nil, .unableToComplete)
+                completion(.failure(.unableToComplete))
                 return
             }
+            // TODO: - RESPONSE STATUS KONTROLU DAHA İYİ YAPILABİLİR.
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completion(nil, .invalidResponse)
+                completion(.failure(.invalidResponse))
                 return
             }
             guard let data = data else {
-                completion(nil, .invalidData)
+                completion(.failure(.invalidData))
                 return
             }
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let followers = try decoder.decode([Follower].self, from: data)
-                completion(followers, nil)
+                completion(.success(followers))
             } catch {
-                completion(nil, .invalidData)
+                completion(.failure(.invalidData))
             }
         }
         task.resume()
