@@ -5,7 +5,7 @@
 //  Created by Yunus Emre Berdibek on 21.01.2024.
 //
 
-import Foundation
+import UIKit
 
 enum GFNetworkError: String, Error {
     case invalidUsername = "This username created an invalid request please try again."
@@ -16,7 +16,8 @@ enum GFNetworkError: String, Error {
 
 final class NetworkManager {
     static let shared = NetworkManager()
-    let baseURL: String = "https://api.github.com/users/"
+    private let baseURL: String = "https://api.github.com/users/"
+    let cache = NSCache<NSString, UIImage>()
 
     private init() {}
 
