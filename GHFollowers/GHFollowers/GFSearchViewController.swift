@@ -48,10 +48,6 @@ final class GFSearchViewController: UIViewController {
     }
 }
 
-#Preview {
-    UINavigationController(rootViewController: GFSearchViewController())
-}
-
 extension GFSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("*****")

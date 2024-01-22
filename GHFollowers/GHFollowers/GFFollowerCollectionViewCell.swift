@@ -23,7 +23,7 @@ final class GFFollowerCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     func configure(with follower: Follower) {
         usernameLabel.text = follower.login
     }
