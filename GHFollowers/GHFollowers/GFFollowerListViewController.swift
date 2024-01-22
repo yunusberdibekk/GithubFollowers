@@ -14,6 +14,10 @@ final class GFFollowerListViewController: UIViewController {
 
     var username: String!
     var followers: [Follower] = []
+    var page: Int = 1
+
+    var hasMoreFollowers: Bool  = true
+
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
 
@@ -21,7 +25,7 @@ final class GFFollowerListViewController: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        getFollowers()
+        getFollowers(username: username, page: page)
         configureDataSource()
     }
 
@@ -30,13 +34,13 @@ final class GFFollowerListViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
-    private func getFollowers() {
-        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+    private func getFollowers(username: String, page: Int) {
+        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             guard let self = self else { return }
-
             switch result {
             case .success(let followers):
-                self.followers = followers
+                if followers.count < 100 {self.hasMoreFollowers = false}
+                self.followers.append(contentsOf: followers)
                 self.updateData()
             case .failure(let errorMessage):
                 self.presentGFAlertOnMainThread(title: "Bad Stuff Happened", message: errorMessage.rawValue, buttonTitle: "OK")
@@ -62,6 +66,7 @@ extension GFFollowerListViewController {
 
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowLayout())
+        collectionView.delegate = self
         view.addSubview(collectionView)
 
         collectionView.backgroundColor = .systemBackground
@@ -87,6 +92,20 @@ extension GFFollowerListViewController {
             cell.configure(with: follower)
             return cell
         })
+    }
+}
+
+extension GFFollowerListViewController: UICollectionViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+
+        if offsetY > contentHeight - height {
+            guard hasMoreFollowers else { return }
+            page += 1
+            getFollowers(username: username, page: page)
+        }
     }
 }
 
