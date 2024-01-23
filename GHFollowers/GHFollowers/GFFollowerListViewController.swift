@@ -16,7 +16,7 @@ final class GFFollowerListViewController: UIViewController {
     var followers: [Follower] = []
     var page: Int = 1
 
-    var hasMoreFollowers: Bool  = true
+    var hasMoreFollowers: Bool = true
 
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
@@ -35,11 +35,13 @@ final class GFFollowerListViewController: UIViewController {
     }
 
     private func getFollowers(username: String, page: Int) {
+        showLoadingView()
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             guard let self = self else { return }
+            self.dismissLoadingView()
             switch result {
             case .success(let followers):
-                if followers.count < 100 {self.hasMoreFollowers = false}
+                if followers.count < 100 { self.hasMoreFollowers = false }
                 self.followers.append(contentsOf: followers)
                 self.updateData()
             case .failure(let errorMessage):
