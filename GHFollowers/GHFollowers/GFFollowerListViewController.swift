@@ -14,6 +14,7 @@ final class GFFollowerListViewController: UIViewController {
 
     var username: String!
     var followers: [Follower] = []
+    var filteredFollowers: [Follower] = []
     var page: Int = 1
 
     var hasMoreFollowers: Bool = true
@@ -24,6 +25,7 @@ final class GFFollowerListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureSearchController()
         configureCollectionView()
         getFollowers(username: username, page: page)
         configureDataSource()
@@ -47,14 +49,14 @@ final class GFFollowerListViewController: UIViewController {
                     let message = "This user doesn't have any followers. Go follow them 😀."
                     DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
                 }
-                self.updateData()
+                self.updateData(on: followers)
             case .failure(let errorMessage):
                 self.presentGFAlertOnMainThread(title: "Bad Stuff Happened", message: errorMessage.rawValue, buttonTitle: "OK")
             }
         }
     }
 
-    private func updateData() {
+    private func updateData(on followers: [Follower]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
@@ -74,9 +76,17 @@ extension GFFollowerListViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowLayout())
         collectionView.delegate = self
         view.addSubview(collectionView)
-
         collectionView.backgroundColor = .systemBackground
         collectionView.register(GFFollowerCollectionViewCell.self, forCellWithReuseIdentifier: GFFollowerCollectionViewCell.reuseIdentifier)
+    }
+
+    private func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search for a username..."
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
     }
 
     private func createThreeColumnFlowLayout() -> UICollectionViewFlowLayout {
@@ -113,6 +123,19 @@ extension GFFollowerListViewController: UICollectionViewDelegate {
             getFollowers(username: username, page: page)
         }
     }
+}
+
+extension GFFollowerListViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let filter = searchController.searchBar.text,!filter.isEmpty else {
+            updateData(on: followers)
+            return
+        }
+        filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
+        updateData(on: filteredFollowers)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
 /*
