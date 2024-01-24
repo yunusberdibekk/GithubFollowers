@@ -26,6 +26,7 @@
 		AA7DBB4A2B5AB4C0002BE205 /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB492B5AB4C0002BE205 /* GFButton.swift */; };
 		AA7DBB4D2B5AD957002BE205 /* GFTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB4C2B5AD957002BE205 /* GFTextField.swift */; };
 		AA7DBB4F2B5AE37D002BE205 /* GFFollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */; };
+		AAFBDDD92B61603900EB991E /* GFUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFBDDD82B61603900EB991E /* GFUserInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		AA7DBB492B5AB4C0002BE205 /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
 		AA7DBB4C2B5AD957002BE205 /* GFTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTextField.swift; sourceTree = "<group>"; };
 		AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFFollowerListViewController.swift; sourceTree = "<group>"; };
+		AAFBDDD82B61603900EB991E /* GFUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFUserInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 			children = (
 				AA7DBB412B59E4E5002BE205 /* GFSearchViewController.swift */,
 				AA7DBB4E2B5AE37D002BE205 /* GFFollowerListViewController.swift */,
+				AAFBDDD82B61603900EB991E /* GFUserInfoViewController.swift */,
 			);
 			name = GFSearch;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				AA73FA642B5DEF2600D2BADD /* GFAvatarImageView.swift in Sources */,
 				AA7DBB2A2B59CE6B002BE205 /* SceneDelegate.swift in Sources */,
 				AA7DBB422B59E4E5002BE205 /* GFSearchViewController.swift in Sources */,
+				AAFBDDD92B61603900EB991E /* GFUserInfoViewController.swift in Sources */,
 				AA7DBB442B59E4EF002BE205 /* GFFavoritesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
