@@ -101,7 +101,7 @@
 		AA3D0ACE2B605FF3006B8185 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				AA77FB992B5C513C00A0E9DF /* Alert */,
+				AA77FB9A2B5C515000A0E9DF /* GFAlertViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -129,14 +129,6 @@
 				AA77FB972B5C4FA300A0E9DF /* GFBodyLabel.swift */,
 			);
 			name = Label;
-			sourceTree = "<group>";
-		};
-		AA77FB992B5C513C00A0E9DF /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				AA77FB9A2B5C515000A0E9DF /* GFAlertViewController.swift */,
-			);
-			name = Alert;
 			sourceTree = "<group>";
 		};
 		AA77FB9C2B5C56BF00A0E9DF /* Utilities */ = {
