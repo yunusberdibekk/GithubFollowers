@@ -5,6 +5,7 @@
 //  Created by Yunus Emre Berdibek on 20.01.2024.
 //
 
+import SafariServices
 import UIKit
 
 private var containerView: UIView!
@@ -16,6 +17,14 @@ extension UIViewController {
             destinationVC.modalPresentationStyle = .overFullScreen
             destinationVC.modalTransitionStyle = .crossDissolve
             self.present(destinationVC, animated: true)
+        }
+    }
+
+    func presentSafariVC(with url: URL) {
+        DispatchQueue.main.async {
+            let safariVC = SFSafariViewController(url: url)
+            safariVC.preferredControlTintColor = .systemGreen
+            self.present(safariVC, animated: true)
         }
     }
 

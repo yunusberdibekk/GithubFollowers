@@ -9,6 +9,7 @@ import UIKit
 
 class GFItemInfoViewController: UIViewController {
     var user: User
+    weak var delegate: GFUserInfoVCDelegate?
 
     let stackView: UIStackView = .init()
     let itemInfoViewOne: GFItemInfoView = .init()
@@ -28,6 +29,7 @@ class GFItemInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
+        configureActionButton()
         layoutUI()
         configureStackView()
     }
@@ -38,6 +40,13 @@ extension GFItemInfoViewController {
         view.layer.cornerRadius = 18
         view.backgroundColor = .secondarySystemBackground
     }
+
+    private func configureActionButton() {
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    }
+
+    @objc
+    func actionButtonTapped() {}
 
     private func configureStackView() {
         stackView.axis = .horizontal
