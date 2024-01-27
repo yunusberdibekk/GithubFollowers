@@ -130,8 +130,7 @@ extension GFFollowerListViewController: UICollectionViewDelegate {
         let activeArray = isSearching ? filteredFollowers : followers
         let follower = activeArray[indexPath.item]
 
-        let destinationVC = GFUserInfoViewController()
-        destinationVC.username = follower.login
+        let destinationVC = GFUserInfoViewController(username: follower.login)
         let navVC = UINavigationController(rootViewController: destinationVC)
         present(navVC, animated: true)
     }
