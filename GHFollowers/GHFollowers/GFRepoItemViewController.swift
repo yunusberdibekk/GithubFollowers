@@ -7,7 +7,18 @@
 
 import Foundation
 
+protocol GFRepoItemInfoVCDelegate: AnyObject {
+    func didTapGitHubProfile(for user: User)
+}
+
 final class GFRepoItemViewController: GFItemInfoViewController {
+    weak var delegate: GFRepoItemInfoVCDelegate?
+
+    init(user: User, delegate: GFRepoItemInfoVCDelegate) {
+        super.init(user: user)
+        self.delegate = delegate
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()

@@ -26,15 +26,23 @@ final class GFFollowerCollectionViewCell: UICollectionViewCell {
 
     func configure(with follower: Follower) {
         usernameLabel.text = follower.login
-        avatarImageView.downloadImage(from: follower.avatarUrl)
+        downloadImage(follower: follower)
+    }
+
+    func downloadImage(follower: Follower) {
+        NetworkManager.shared.downloadImage(from: follower.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.avatarImageView.image = image
+            }
+        }
     }
 }
 
 extension GFFollowerCollectionViewCell {
     private func configure() {
-        addSubview(avatarImageView)
-        addSubview(usernameLabel)
-
+        addSubviews(avatarImageView, usernameLabel)
+        
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: padding),
             avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),

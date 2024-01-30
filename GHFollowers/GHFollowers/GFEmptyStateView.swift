@@ -13,7 +13,9 @@ final class GFEmptyStateView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        addSubviews(logoImageView, messageLabel)
+        configureMessageLabel()
+        configureLogoView()
     }
 
     @available(*, unavailable)
@@ -21,35 +23,40 @@ final class GFEmptyStateView: UIView {
         fatalError()
     }
 
-    init(message: String) {
-        super.init(frame: .zero)
+    convenience init(message: String) {
+        self.init(frame: .zero)
         messageLabel.text = message
-        configure()
     }
 }
 
 extension GFEmptyStateView {
-    private func configure() {
-        addSubview(messageLabel)
-        addSubview(logoImageView)
+    private func configureLogoView() {
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.image = Images.emptyStateLogo
 
+        let logoBottomConstant: CGFloat = DeviceTypes.isIphoneSE || DeviceTypes.isIphone8Zoomed ? 80 : 40
+        let logoImageViewBottomConstraint = logoImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: logoBottomConstant)
+        logoImageViewBottomConstraint.isActive = true
+
+        NSLayoutConstraint.activate([
+            logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
+            logoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
+            logoImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 200)
+        ])
+    }
+
+    private func configureMessageLabel() {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
 
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(resource: .emptyStateLogo)
-
+        let labelCenterYConstant: CGFloat = DeviceTypes.isIphoneSE || DeviceTypes.isIphone8Zoomed ? -80 : -150
+        let messageLabelCenterYConstraint = messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: labelCenterYConstant)
+        messageLabelCenterYConstraint.isActive = true
         NSLayoutConstraint.activate([
-            messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -150),
-            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
-            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
-            messageLabel.heightAnchor.constraint(equalToConstant: 200),
-
             logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
             logoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
-            logoImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 200),
-            logoImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 40),
+            logoImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 200)
         ])
     }
 }

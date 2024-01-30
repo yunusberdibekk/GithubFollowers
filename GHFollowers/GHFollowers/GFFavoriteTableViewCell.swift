@@ -26,15 +26,22 @@ final class GFFavoriteTableViewCell: UITableViewCell {
 
     func configure(with follower: Follower) {
         usernameLabel.text = follower.login
-        avatarImageView.downloadImage(from: follower.avatarUrl)
+        downloadImage(favorite: follower)
+    }
+
+    func downloadImage(favorite: Follower) {
+        NetworkManager.shared.downloadImage(from: favorite.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.avatarImageView.image = image
+            }
+        }
     }
 }
 
 extension GFFavoriteTableViewCell {
     private func configure() {
-        addSubview(avatarImageView)
-        addSubview(usernameLabel)
-
+        addSubviews(avatarImageView, usernameLabel)
         accessoryType = .disclosureIndicator
 
         NSLayoutConstraint.activate([

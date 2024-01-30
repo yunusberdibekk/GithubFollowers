@@ -1,13 +1,13 @@
 //
-//  GFAvatarImageView.swift
+//  GFAlertContainerView.swift
 //  GHFollowers
 //
-//  Created by Yunus Emre Berdibek on 22.01.2024.
+//  Created by Yunus Emre Berdibek on 30.01.2024.
 //
 
 import UIKit
 
-final class GFAvatarImageView: UIImageView {
+final class GFAlertContainerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -17,13 +17,12 @@ final class GFAvatarImageView: UIImageView {
     required init?(coder: NSCoder) {
         fatalError()
     }
-}
 
-extension GFAvatarImageView {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 10
-        clipsToBounds = true
-        image = Images.placeholder
+        backgroundColor = .systemBackground
+        layer.cornerRadius = 16
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
     }
 }

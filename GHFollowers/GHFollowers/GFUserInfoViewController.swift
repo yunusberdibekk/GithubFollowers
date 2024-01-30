@@ -9,13 +9,12 @@ import SafariServices
 import UIKit
 
 protocol GFUserInfoVCDelegate: AnyObject {
-    func didTapGitHubProfile(for user: User)
-    func didTapGitFollowers(for user: User)
+    func didRequestFollowers(for username: String)
 }
 
-final class GFUserInfoViewController: UIViewController {
+final class GFUserInfoViewController: GFDataLoadingViewController {
     private let username: String
-    weak var delegate: GFFollowerListVCDelegate?
+    weak var delegate: GFUserInfoVCDelegate?
 
     private let headerView = UIView()
     private let itemViewOne = UIView()
@@ -66,15 +65,10 @@ extension GFUserInfoViewController {
     }
 
     private func configureUIElements(with user: User) {
-        let repoItemVC = GFRepoItemViewController(user: user)
-        repoItemVC.delegate = self
-        let followerItemVC = GFFollowerItemViewController(user: user)
-        followerItemVC.delegate = self
-
         add(childVC: GFUserInfoHeaderViewController(user: user), to: headerView)
-        add(childVC: repoItemVC, to: itemViewOne)
-        add(childVC: followerItemVC, to: itemViewTwo)
-        dateLabel.text = "GitHub since \(user.createdAt.convertToDisplayFormat())"
+        add(childVC: GFRepoItemViewController(user: user, delegate: self), to: itemViewOne)
+        add(childVC: GFFollowerItemViewController(user: user, delegate: self), to: itemViewTwo)
+        dateLabel.text = "GitHub since \(user.createdAt.convertToMonthYearFormat())"
     }
 
     private func layoutUI() {
@@ -91,7 +85,7 @@ extension GFUserInfoViewController {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
 
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
             itemViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
@@ -117,7 +111,7 @@ extension GFUserInfoViewController {
     }
 }
 
-extension GFUserInfoViewController: GFUserInfoVCDelegate {
+extension GFUserInfoViewController: GFRepoItemInfoVCDelegate {
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
             presentGFAlertOnMainThread(title: "Invalid URL", message: "The url attached to this user is invalid.", buttonTitle: "Ok")
@@ -125,7 +119,9 @@ extension GFUserInfoViewController: GFUserInfoVCDelegate {
         }
         presentSafariVC(with: url)
     }
+}
 
+extension GFUserInfoViewController: GFFollowerItemInfoVCDelegate {
     func didTapGitFollowers(for user: User) {
         guard user.followers != 0 else {
             presentGFAlertOnMainThread(title: "No Followers", message: "This user has no followers. What a shame 😊", buttonTitle: "Ok")

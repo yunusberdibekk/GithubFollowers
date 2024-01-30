@@ -11,6 +11,7 @@ final class GFSearchViewController: UIViewController {
     let logoImageView = UIImageView()
     let usernameTextField = GFTextField()
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+    var logoImageViewTopConstraint: NSLayoutConstraint!
 
     var isUsernameEntered: Bool {
         !usernameTextField.text!.isEmpty
@@ -19,6 +20,7 @@ final class GFSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        view.addSubviews(logoImageView, usernameTextField, callToActionButton)
         createDismissKeyboardTapGesture()
         configureLogoImageView()
         configureTextField()
@@ -27,6 +29,7 @@ final class GFSearchViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        usernameTextField.text = ""
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
@@ -41,9 +44,8 @@ final class GFSearchViewController: UIViewController {
             presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username. We need to know who to look for 😀.", buttonTitle: "OK")
             return
         }
-        let destinationVC = GFFollowerListViewController()
-        destinationVC.username = usernameTextField.text
-        destinationVC.title = usernameTextField.text
+        usernameTextField.resignFirstResponder()
+        let destinationVC = GFFollowerListViewController(username: usernameTextField.text!)
         navigationController?.pushViewController(destinationVC, animated: true)
     }
 }
@@ -57,13 +59,14 @@ extension GFSearchViewController: UITextFieldDelegate {
 
 extension GFSearchViewController {
     private func configureLogoImageView() {
-        view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(resource: .ghLogo)
+        logoImageView.image = Images.ghLogo
+
+        let topConstraintConstant: CGFloat = DeviceTypes.isIphoneSE || DeviceTypes.isIphone8Zoomed ? 20 : 80
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
+        logoImageViewTopConstraint.isActive = true
 
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                               constant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
@@ -71,7 +74,6 @@ extension GFSearchViewController {
     }
 
     private func configureTextField() {
-        view.addSubview(usernameTextField)
         usernameTextField.delegate = self
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 48),
@@ -82,7 +84,6 @@ extension GFSearchViewController {
     }
 
     private func configureCallToActionButton() {
-        view.addSubview(callToActionButton)
         callToActionButton.addTarget(self, action: #selector(pushFollowerListViewController), for: .touchUpInside)
         NSLayoutConstraint.activate([
             callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,

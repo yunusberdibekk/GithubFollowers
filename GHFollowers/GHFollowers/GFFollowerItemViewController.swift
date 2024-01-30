@@ -7,7 +7,18 @@
 
 import Foundation
 
+protocol GFFollowerItemInfoVCDelegate: AnyObject {
+    func didTapGitFollowers(for user: User)
+}
+
 final class GFFollowerItemViewController: GFItemInfoViewController {
+    weak var delegate: GFFollowerItemInfoVCDelegate?
+
+    init(user: User, delegate: GFFollowerItemInfoVCDelegate) {
+        super.init(user: user)
+        self.delegate = delegate
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()

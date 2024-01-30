@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class GFFavoritesViewController: UIViewController {
+final class GFFavoritesViewController: GFDataLoadingViewController {
     let tableView: UITableView = .init()
     var favorites: [Follower] = []
 
@@ -77,9 +77,7 @@ extension GFFavoritesViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let favorite = favorites[indexPath.row]
-        let destinationVC = GFFollowerListViewController()
-        destinationVC.username = favorite.login
-        destinationVC.title = favorite.login
+        let destinationVC = GFFollowerListViewController(username: favorite.login)
         navigationController?.pushViewController(destinationVC, animated: true)
     }
 
