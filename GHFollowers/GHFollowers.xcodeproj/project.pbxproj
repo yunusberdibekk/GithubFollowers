@@ -31,6 +31,7 @@
 		AA9B7DD02B6806D9006BF40E /* GFTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B7DCF2B6806D9006BF40E /* GFTabBarController.swift */; };
 		AA9B7DD22B684D62006BF40E /* GFAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B7DD12B684D62006BF40E /* GFAlertContainerView.swift */; };
 		AA9B7DD42B687515006BF40E /* GFDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B7DD32B687515006BF40E /* GFDataLoadingViewController.swift */; };
+		AA9B7DD62B689138006BF40E /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B7DD52B689138006BF40E /* UITableView+Extension.swift */; };
 		AAB907122B654A3C004DFC84 /* GFUserInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB907112B654A3C004DFC84 /* GFUserInfoHeaderViewController.swift */; };
 		AAB907142B654A9E004DFC84 /* GFSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB907132B654A9E004DFC84 /* GFSecondaryTitleLabel.swift */; };
 		AAB907162B654DB2004DFC84 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB907152B654DB2004DFC84 /* UIView+Extension.swift */; };
@@ -71,6 +72,7 @@
 		AA9B7DCF2B6806D9006BF40E /* GFTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTabBarController.swift; sourceTree = "<group>"; };
 		AA9B7DD12B684D62006BF40E /* GFAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFAlertContainerView.swift; sourceTree = "<group>"; };
 		AA9B7DD32B687515006BF40E /* GFDataLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFDataLoadingViewController.swift; sourceTree = "<group>"; };
+		AA9B7DD52B689138006BF40E /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		AAB907112B654A3C004DFC84 /* GFUserInfoHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFUserInfoHeaderViewController.swift; sourceTree = "<group>"; };
 		AAB907132B654A9E004DFC84 /* GFSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 		AAB907152B654DB2004DFC84 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				AAB907152B654DB2004DFC84 /* UIView+Extension.swift */,
 				AAB907242B658CF0004DFC84 /* Date+Extension.swift */,
 				AAB907262B658D1B004DFC84 /* String+Extension.swift */,
+				AA9B7DD52B689138006BF40E /* UITableView+Extension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				AA77FB982B5C4FA300A0E9DF /* GFBodyLabel.swift in Sources */,
 				AA7DBB4F2B5AE37D002BE205 /* GFFollowerListViewController.swift in Sources */,
 				AAB907192B655B0B004DFC84 /* Constants.swift in Sources */,
+				AA9B7DD62B689138006BF40E /* UITableView+Extension.swift in Sources */,
 				AA9B7DD42B687515006BF40E /* GFDataLoadingViewController.swift in Sources */,
 				AAB9071F2B657F47004DFC84 /* GFRepoItemViewController.swift in Sources */,
 				AA9B7DD22B684D62006BF40E /* GFAlertContainerView.swift in Sources */,

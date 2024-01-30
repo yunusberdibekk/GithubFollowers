@@ -7,8 +7,6 @@
 
 import Foundation
 
-// TODO: PERSISTANCE MANAGER İŞLEMLERİ CORE DATA İLE YAPILABİLİR.
-
 enum PersistanceActionType {
     case add, remove
 }
@@ -23,19 +21,18 @@ enum PersistanceManager {
     static func updateWith(favorite: Follower, actionType: PersistanceActionType, completion: @escaping (GFNetworkError?) -> Void) {
         retrieveFavorites { result in
             switch result {
-            case .success(let favorites):
-                var retrivedFavorites = favorites
+            case .success(var favorites):
                 switch actionType {
                 case .add:
-                    guard !retrivedFavorites.contains(favorite) else {
+                    guard !favorites.contains(favorite) else {
                         completion(.alreadyInFavorites)
                         return
                     }
-                    retrivedFavorites.append(favorite)
+                    favorites.append(favorite)
                 case .remove:
-                    retrivedFavorites.removeAll(where: { $0.login == favorite.login })
+                    favorites.removeAll(where: { $0.login == favorite.login })
                 }
-                completion(save(favorites: retrivedFavorites))
+                completion(save(favorites: favorites))
             case .failure(let error):
                 completion(error)
             }

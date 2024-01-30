@@ -7,8 +7,6 @@
 
 import UIKit
 
-// TODO: Ilk olarak MVVM Geçirmeden önce bu yapıyı daha generic bir şekilde kurmak lazım. MVC kullanılsa bile her network çağrısı için network manager içerisinde ayrı fonksiyon yazmak avellik.
-
 enum GFNetworkError: String, Error {
     case invalidUsername = "This username created an invalid request please try again."
     case unableToComplete = "Unable to complete your request. Please check your internet connection."
@@ -20,12 +18,12 @@ enum GFNetworkError: String, Error {
 
 final class NetworkManager {
     static let shared = NetworkManager()
+
     private let baseURL: String = "https://api.github.com/users/"
-    let cache = NSCache<NSString, UIImage>()
+    private let cache = NSCache<NSString, UIImage>()
 
     private init() {}
 
-    // TODO: - BU MANAGER DAHA GENERİC HALE GELEBİLİR. RESULT KULLANILABİLİR. URL REQUEST HEADER AND CONTENT EKLE.
     func getFollowers(for username: String, page: Int, completion: @escaping (Result<[Follower], GFNetworkError>) -> Void) {
         let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
         guard let url = URL(string: endpoint) else {
@@ -37,12 +35,11 @@ final class NetworkManager {
                 completion(.failure(.unableToComplete))
                 return
             }
-            // TODO: - RESPONSE STATUS KONTROLU DAHA İYİ YAPILABİLİR.
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 completion(.failure(.invalidResponse))
                 return
             }
-            guard let data = data else {
+            guard let data else {
                 completion(.failure(.invalidData))
                 return
             }
@@ -73,7 +70,7 @@ final class NetworkManager {
                 completion(.failure(.invalidResponse))
                 return
             }
-            guard let data = data else {
+            guard let data else {
                 completion(.failure(.invalidData))
                 return
             }
@@ -96,45 +93,27 @@ final class NetworkManager {
             completion(image)
             return
         }
-
         guard let url = URL(string: urlString) else { completion(nil); return }
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { completion(nil); return }
-            if error != nil { completion(nil); return }
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { completion(nil); return }
-            guard let data = data else { completion(nil); return }
+            guard let self else {
+                completion(nil)
+                return
+            }
+            if error != nil {
+                completion(nil)
+                return
+            }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(nil)
+                return
+            }
+            guard let data else {
+                completion(nil)
+                return
+            }
             guard let image = UIImage(data: data) else { completion(nil); return }
             cache.setObject(image, forKey: cacheKey)
             completion(image)
-        }
-        task.resume()
-    }
-
-    // TODO: Bu fonksiyonu kullanarak ilerde daha generic bir network manager yapılabilir.
-    func execute<T: Codable>(with request: URLRequest, expecting type: T.Type, completion: @escaping (Result<T, GFNetworkError>) -> Void) {
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else {
-                completion(.failure(.unableToComplete))
-                return
-            }
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200
-            else {
-                completion(.failure(.invalidResponse))
-                return
-            }
-            guard let data = data else {
-                completion(.failure(.invalidData))
-                return
-            }
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let result = try decoder.decode(T.self, from: data)
-                completion(.success(result))
-            } catch {
-                completion(.failure(.invalidData))
-            }
         }
         task.resume()
     }

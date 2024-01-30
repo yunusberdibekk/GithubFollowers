@@ -18,21 +18,23 @@ final class GFButton: UIButton {
         fatalError()
     }
 
-    convenience init(backgroundColor: UIColor, title: String) {
+    convenience init(color: UIColor, title: String, systemImageName: String) {
         self.init(frame: .zero)
-        self.backgroundColor = backgroundColor
-        setTitle(title, for: .normal)
+        configure(color: color, title: title, systemImageName: systemImageName)
     }
 
-    func configure(backgroundColor: UIColor, title: String) {
-        self.backgroundColor = backgroundColor
-        setTitle(title, for: .normal)
+    func configure(color: UIColor, title: String, systemImageName: String) {
+        configuration?.baseBackgroundColor = color
+        configuration?.baseForegroundColor = .white
+        configuration?.title = title
+        configuration?.image = UIImage(systemName: systemImageName)
+        configuration?.imagePadding = 6
+        configuration?.imagePlacement = .leading
     }
 
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        setTitleColor(.white, for: .normal)
-        layer.cornerRadius = 10
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        configuration = .filled()
+        configuration?.cornerStyle = .medium
     }
 }

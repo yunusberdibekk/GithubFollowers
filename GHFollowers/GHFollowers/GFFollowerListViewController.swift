@@ -16,7 +16,6 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
     var followers: [Follower] = []
     var filteredFollowers: [Follower] = []
     var page: Int = 1
-
     var hasMoreFollowers: Bool = true
     var isSearching: Bool = false
     var isLoadingMoreFollowers: Bool = false
@@ -49,26 +48,41 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if followers.isEmpty && !isLoadingMoreFollowers {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = UIImage(systemName: "person.slash")
+            config.text = "No Followers"
+            config.secondaryText = "This user has no followers. Go follow them!"
+            contentUnavailableConfiguration = config
+        } else if isSearching && filteredFollowers.isEmpty {
+            contentUnavailableConfiguration = UIContentUnavailableConfiguration.search()
+        } else {
+            contentUnavailableConfiguration = nil
+        }
+    }
+
     private func getFollowers(username: String, page: Int) {
         showLoadingView()
         isLoadingMoreFollowers = true
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissLoadingView()
             switch result {
             case .success(let followers):
-                if followers.count < 100 { self.hasMoreFollowers = false }
-                self.followers.append(contentsOf: followers)
-                if self.followers.isEmpty {
-                    let message = "This user doesn't have any followers. Go follow them 😀."
-                    DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
-                }
-                self.updateData(on: followers)
+                updateUI(with: followers)
             case .failure(let errorMessage):
                 self.presentGFAlertOnMainThread(title: "Bad Stuff Happened", message: errorMessage.rawValue, buttonTitle: "OK")
             }
         }
         isLoadingMoreFollowers = false
+    }
+
+    func updateUI(with followers: [Follower]) {
+        if followers.count < 100 { hasMoreFollowers = false }
+        self.followers.append(contentsOf: followers)
+        updateData(on: followers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
 
     private func updateData(on followers: [Follower]) {
@@ -83,14 +97,14 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
     @objc private func addButtonTapped() {
         showLoadingView()
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissLoadingView()
             switch result {
             case .success(let user):
                 let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
                 PersistanceManager.updateWith(favorite: favorite, actionType: .add) { [weak self] error in
-                    guard let self = self else { return }
-                    guard let error = error else {
+                    guard let self else { return }
+                    guard let error else {
                         self.presentGFAlertOnMainThread(title: "Success!", message: "You have succesfully favorited this user.", buttonTitle: "Hooray!")
                         return
                     }
@@ -107,7 +121,6 @@ extension GFFollowerListViewController {
     private func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
     }
 
@@ -185,6 +198,7 @@ extension GFFollowerListViewController: UISearchResultsUpdating {
         isSearching = true
         filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredFollowers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
 }
 

@@ -9,6 +9,7 @@ import UIKit
 
 final class GFFavoritesViewController: GFDataLoadingViewController {
     let tableView: UITableView = .init()
+
     var favorites: [Follower] = []
 
     override func viewDidLoad() {
@@ -25,20 +26,24 @@ final class GFFavoritesViewController: GFDataLoadingViewController {
 
     private func getFavorites() {
         PersistanceManager.retrieveFavorites { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let favorites):
-                if favorites.isEmpty {
-                    showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen.", in: self.view)
-                } else {
-                    self.favorites = favorites
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
+                updateUI(with: favorites)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
+    }
+
+    private func updateUI(with favorites: [Follower]) {
+        if favorites.isEmpty {
+            showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen.", in: view)
+        } else {
+            self.favorites = favorites
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.view.bringSubviewToFront(self.tableView)
             }
         }
     }
@@ -54,6 +59,7 @@ extension GFFavoritesViewController {
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.frame = view.bounds
+        tableView.removeExcessCells() // tableview içindeki ekstra cell'leri silmek için.
         tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
@@ -86,12 +92,16 @@ extension GFFavoritesViewController: UITableViewDelegate, UITableViewDataSource 
             return
         }
         let favorite = favorites[indexPath.row]
-        favorites.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .left)
-
         PersistanceManager.updateWith(favorite: favorite, actionType: .remove) { [weak self] error in
-            guard let self = self else { return }
-            guard let error = error else { return }
+            guard let self else { return }
+            guard let error else {
+                self.favorites.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+                if self.favorites.isEmpty {
+                    showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen.", in: self.view)
+                }
+                return
+            }
             self.presentGFAlertOnMainThread(title: "Unable to remove", message: error.rawValue, buttonTitle: "Ok")
         }
     }

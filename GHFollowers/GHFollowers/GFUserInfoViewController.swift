@@ -13,13 +13,15 @@ protocol GFUserInfoVCDelegate: AnyObject {
 }
 
 final class GFUserInfoViewController: GFDataLoadingViewController {
-    private let username: String
-    weak var delegate: GFUserInfoVCDelegate?
-
+    private let scroolView = UIScrollView()
+    private let contentView = UIView()
     private let headerView = UIView()
     private let itemViewOne = UIView()
     private let itemViewTwo = UIView()
     private let dateLabel: GFBodyLabel = .init(textAlignment: .center)
+
+    private let username: String
+    weak var delegate: GFUserInfoVCDelegate?
 
     init(username: String) {
         self.username = username
@@ -34,6 +36,7 @@ final class GFUserInfoViewController: GFDataLoadingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureScroolView()
         layoutUI()
         getUserInfo()
     }
@@ -45,7 +48,7 @@ final class GFUserInfoViewController: GFDataLoadingViewController {
 
     private func getUserInfo() {
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
@@ -71,8 +74,20 @@ extension GFUserInfoViewController {
         dateLabel.text = "GitHub since \(user.createdAt.convertToMonthYearFormat())"
     }
 
+    private func configureScroolView() {
+        view.addSubview(scroolView)
+        scroolView.addSubview(contentView)
+        scroolView.pinToEdges(of: view)
+        contentView.pinToEdges(of: scroolView)
+
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scroolView.widthAnchor),
+            scroolView.heightAnchor.constraint(equalToConstant: 600),
+        ])
+    }
+
     private func layoutUI() {
-        view.addSubviews(headerView, itemViewOne, itemViewTwo, dateLabel)
+        contentView.addSubviews(headerView, itemViewOne, itemViewTwo, dateLabel)
 
         headerView.translatesAutoresizingMaskIntoConstraints = false
         itemViewOne.translatesAutoresizingMaskIntoConstraints = false
@@ -82,23 +97,23 @@ extension GFUserInfoViewController {
         let itemHeight: CGFloat = 140
 
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            headerView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             headerView.heightAnchor.constraint(equalToConstant: 210),
 
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
-            itemViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            itemViewOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            itemViewOne.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            itemViewOne.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
 
             itemViewTwo.topAnchor.constraint(equalTo: itemViewOne.bottomAnchor, constant: padding),
-            itemViewTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            itemViewTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            itemViewTwo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            itemViewTwo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
 
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             dateLabel.heightAnchor.constraint(equalToConstant: 18),
         ])
     }
