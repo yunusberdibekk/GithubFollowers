@@ -12,8 +12,6 @@ final class GFSearchViewController: UIViewController {
     let usernameTextField = GFTextField()
     let callToActionButton = GFButton(color: .systemGreen, title: "Get Followers", systemImageName: "person.3")
 
-    var logoImageViewTopConstraint: NSLayoutConstraint!
-
     var isUsernameEntered: Bool {
         !usernameTextField.text!.isEmpty
     }
@@ -53,7 +51,7 @@ final class GFSearchViewController: UIViewController {
 
 extension GFSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("*****")
+        pushFollowerListViewController()
         return true
     }
 }

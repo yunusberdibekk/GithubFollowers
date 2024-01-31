@@ -18,7 +18,7 @@ final class GFRepoItemViewController: GFItemInfoViewController {
         super.init(user: user)
         self.delegate = delegate
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureItems()

@@ -13,7 +13,7 @@ extension Date {
 //        dateFormatter.dateFormat = "MMMM yyyy"
 //        return dateFormatter.string(from: self)
 //    }
-    
+
     func convertToMonthYearFormat() -> String {
         return formatted(.dateTime.month().year())
     }

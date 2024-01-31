@@ -20,8 +20,8 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
     var filteredFollowers: [Follower] = []
     var page: Int = 1
     var hasMoreFollowers: Bool = true
-    var isSearching: Bool = false
     var isLoadingMoreFollowers: Bool = false
+    var isSearching: Bool = false
 
     init(username: String) {
         super.init(nibName: nil, bundle: nil)
@@ -48,20 +48,6 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
-    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
-        if followers.isEmpty && !isLoadingMoreFollowers {
-            var config = UIContentUnavailableConfiguration.empty()
-            config.image = UIImage(systemName: "person.slash")
-            config.text = "No Followers"
-            config.secondaryText = "This user has no followers. Go follow them!"
-            contentUnavailableConfiguration = config
-        } else if isSearching && filteredFollowers.isEmpty {
-            contentUnavailableConfiguration = UIContentUnavailableConfiguration.search()
-        } else {
-            contentUnavailableConfiguration = nil
-        }
-    }
-
     private func getFollowers(username: String, page: Int) {
         showLoadingView()
         isLoadingMoreFollowers = true
@@ -78,11 +64,14 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
         isLoadingMoreFollowers = false
     }
 
-    func updateUI(with followers: [Follower]) {
+    private func updateUI(with followers: [Follower]) {
         if followers.count < 100 { hasMoreFollowers = false }
         self.followers.append(contentsOf: followers)
+        if self.followers.isEmpty {
+            let message = "This user doesn't have any followers. Go follow them 😀."
+            DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
+        }
         updateData(on: followers)
-        setNeedsUpdateContentUnavailableConfiguration()
     }
 
     private func updateData(on followers: [Follower]) {
@@ -121,6 +110,7 @@ extension GFFollowerListViewController {
     private func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
     }
 
@@ -135,6 +125,7 @@ extension GFFollowerListViewController {
     private func configureSearchController() {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search for a username..."
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
@@ -187,7 +178,7 @@ extension GFFollowerListViewController: UICollectionViewDelegate {
     }
 }
 
-extension GFFollowerListViewController: UISearchResultsUpdating {
+extension GFFollowerListViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text,!filter.isEmpty else {
             filteredFollowers.removeAll()
@@ -198,8 +189,9 @@ extension GFFollowerListViewController: UISearchResultsUpdating {
         isSearching = true
         filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredFollowers)
-        setNeedsUpdateContentUnavailableConfiguration()
     }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
 extension GFFollowerListViewController: GFUserInfoVCDelegate {

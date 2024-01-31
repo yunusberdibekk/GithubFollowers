@@ -12,16 +12,14 @@ protocol GFUserInfoVCDelegate: AnyObject {
     func didRequestFollowers(for username: String)
 }
 
-final class GFUserInfoViewController: GFDataLoadingViewController {
-    private let scroolView = UIScrollView()
-    private let contentView = UIView()
+final class GFUserInfoViewController: UIViewController {
+    private let username: String
+    weak var delegate: GFUserInfoVCDelegate?
+
     private let headerView = UIView()
     private let itemViewOne = UIView()
     private let itemViewTwo = UIView()
     private let dateLabel: GFBodyLabel = .init(textAlignment: .center)
-
-    private let username: String
-    weak var delegate: GFUserInfoVCDelegate?
 
     init(username: String) {
         self.username = username
@@ -36,7 +34,6 @@ final class GFUserInfoViewController: GFDataLoadingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        configureScroolView()
         layoutUI()
         getUserInfo()
     }
@@ -74,20 +71,8 @@ extension GFUserInfoViewController {
         dateLabel.text = "GitHub since \(user.createdAt.convertToMonthYearFormat())"
     }
 
-    private func configureScroolView() {
-        view.addSubview(scroolView)
-        scroolView.addSubview(contentView)
-        scroolView.pinToEdges(of: view)
-        contentView.pinToEdges(of: scroolView)
-
-        NSLayoutConstraint.activate([
-            contentView.widthAnchor.constraint(equalTo: scroolView.widthAnchor),
-            scroolView.heightAnchor.constraint(equalToConstant: 600),
-        ])
-    }
-
     private func layoutUI() {
-        contentView.addSubviews(headerView, itemViewOne, itemViewTwo, dateLabel)
+        view.addSubviews(headerView, itemViewOne, itemViewTwo, dateLabel)
 
         headerView.translatesAutoresizingMaskIntoConstraints = false
         itemViewOne.translatesAutoresizingMaskIntoConstraints = false
@@ -97,23 +82,23 @@ extension GFUserInfoViewController {
         let itemHeight: CGFloat = 140
 
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            headerView.heightAnchor.constraint(equalToConstant: 210),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            headerView.heightAnchor.constraint(equalToConstant: 180),
 
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
-            itemViewOne.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            itemViewOne.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            itemViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            itemViewOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
 
             itemViewTwo.topAnchor.constraint(equalTo: itemViewOne.bottomAnchor, constant: padding),
-            itemViewTwo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            itemViewTwo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            itemViewTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            itemViewTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
 
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             dateLabel.heightAnchor.constraint(equalToConstant: 18),
         ])
     }
@@ -126,16 +111,6 @@ extension GFUserInfoViewController {
     }
 }
 
-extension GFUserInfoViewController: GFRepoItemInfoVCDelegate {
-    func didTapGitHubProfile(for user: User) {
-        guard let url = URL(string: user.htmlUrl) else {
-            presentGFAlertOnMainThread(title: "Invalid URL", message: "The url attached to this user is invalid.", buttonTitle: "Ok")
-            return
-        }
-        presentSafariVC(with: url)
-    }
-}
-
 extension GFUserInfoViewController: GFFollowerItemInfoVCDelegate {
     func didTapGitFollowers(for user: User) {
         guard user.followers != 0 else {
@@ -144,5 +119,15 @@ extension GFUserInfoViewController: GFFollowerItemInfoVCDelegate {
         }
         delegate?.didRequestFollowers(for: user.login)
         dismissVC()
+    }
+}
+
+extension GFUserInfoViewController: GFRepoItemInfoVCDelegate {
+    func didTapGitHubProfile(for user: User) {
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGFAlertOnMainThread(title: "Invalid URL", message: "The url attached to this user is invalid.", buttonTitle: "Ok")
+            return
+        }
+        presentSafariVC(with: url)
     }
 }

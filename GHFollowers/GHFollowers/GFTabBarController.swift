@@ -24,7 +24,7 @@ extension GFTabBarController {
     }
 
     func createGHFavoritesNavigationController() -> UINavigationController {
-        let favoritesVC = GFFavoritesViewController()
+        let favoritesVC = GFFavoritesListViewController()
         favoritesVC.title = "Favorites"
         favoritesVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
         return UINavigationController(rootViewController: favoritesVC)

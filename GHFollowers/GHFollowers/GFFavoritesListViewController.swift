@@ -1,5 +1,5 @@
 //
-//  GFFavoritesViewController.swift
+//  GFFavoritesListViewController.swift
 //  GHFollowers
 //
 //  Created by Yunus Emre Berdibek on 19.01.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class GFFavoritesViewController: GFDataLoadingViewController {
+final class GFFavoritesListViewController: GFDataLoadingViewController {
     let tableView: UITableView = .init()
 
     var favorites: [Follower] = []
@@ -49,7 +49,7 @@ final class GFFavoritesViewController: GFDataLoadingViewController {
     }
 }
 
-extension GFFavoritesViewController {
+extension GFFavoritesListViewController {
     private func configureViewController() {
         view.backgroundColor = .systemBackground
         title = "Favorites"
@@ -68,7 +68,7 @@ extension GFFavoritesViewController {
     }
 }
 
-extension GFFavoritesViewController: UITableViewDelegate, UITableViewDataSource {
+extension GFFavoritesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         favorites.count
     }
