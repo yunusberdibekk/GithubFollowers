@@ -12,16 +12,16 @@ final class GFFollowerListViewController: GFDataLoadingViewController {
         case main
     }
 
+    var collectionView: UICollectionView!
+
     var username: String!
+    var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     var followers: [Follower] = []
     var filteredFollowers: [Follower] = []
     var page: Int = 1
     var hasMoreFollowers: Bool = true
     var isSearching: Bool = false
     var isLoadingMoreFollowers: Bool = false
-
-    var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
 
     init(username: String) {
         super.init(nibName: nil, bundle: nil)

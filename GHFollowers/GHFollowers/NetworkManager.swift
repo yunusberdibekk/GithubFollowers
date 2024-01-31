@@ -117,4 +117,6 @@ final class NetworkManager {
         }
         task.resume()
     }
+    
+    func execute() {}
 }
